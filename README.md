@@ -10,3 +10,7 @@ TODOs:
 3) Save this startup time on the board and at the next startup check if it is the same (within the margin)
 
 4) Model the attack: change something in source (startup routine) and see if it can notice it or not.
+
+DONE:
+
+Nothing is done at the moment
