@@ -69,7 +69,6 @@ int  main (void)
 		/************************************************************/
 	
 		CPU_IntDis(); 					/*disable interrupt*/
-		//WHAT IS THIS AND WHERE IS CPU_IntEn() called?
 	
     CPU_Init();   					/*init cpu - name and timestamp init*/
     Mem_Init();							/*Memory initialization*/
