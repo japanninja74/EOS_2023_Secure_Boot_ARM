@@ -24,7 +24,8 @@
 const unsigned correct_overflows = 0;
 unsigned systick_overflows = 0;
 unsigned timer_overflows = 0;
-const CPU_REG32 correct_startup_time_w_loop = 0x0000B1F2;
+const CPU_REG32 correct_startup_time_w_loop = 0x0000B1DD;
+const CPU_REG32 correct_timer_startup_time_w_loop = 0x00000AB4;
 
 /*
 *********************************************************************************************************
@@ -76,7 +77,7 @@ int  main (void)
 		
 	
 		/************************ ADDED *****************************/
-		for(int i = 0; i < 10; i++){}; 										//loop to see if startup time changes with this	
+		//for(int i = 0; i < 10; i++){}; 										//loop to see if startup time changes with this	
 			
 		CPU_SR_ALLOC(); 																	//needed for critical section
 		CPU_CRITICAL_ENTER(); 														//disabling interrupts for critical section process
@@ -97,7 +98,8 @@ int  main (void)
     
 			
 		/************************ MODIFIED *****************************/			
-		if(startup_time != correct_startup_time_w_loop || systick_overflows != correct_overflows){
+		if(startup_time != correct_startup_time_w_loop || systick_overflows != correct_overflows 
+			 || timer_startup_time != correct_timer_startup_time_w_loop){
 			while(DEF_ON){};
 		}
 		else {
