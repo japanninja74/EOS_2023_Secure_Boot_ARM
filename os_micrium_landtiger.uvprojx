@@ -842,22 +842,17 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>bare_metal_timer</GroupName>
+          <GroupName>secure_boot</GroupName>
           <Files>
             <File>
-              <FileName>IRQ_timer.c</FileName>
+              <FileName>secure_boot.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\bare_metal_timer\IRQ_timer.c</FilePath>
+              <FilePath>.\secure_boot\secure_boot.c</FilePath>
             </File>
             <File>
-              <FileName>lib_timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\bare_metal_timer\lib_timer.c</FilePath>
-            </File>
-            <File>
-              <FileName>timer.h</FileName>
+              <FileName>secure_boot.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\bare_metal_timer\timer.h</FilePath>
+              <FilePath>.\secure_boot\secure_boot.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -16,7 +16,7 @@
 #include "BSP.h"
 
 
-#include "bare_metal_timer/timer.h"
+#include "secure_boot/secure_boot.h"
 
      /* ----------------- APPLICATION GLOBALS ------------------ */
 
@@ -54,16 +54,15 @@ int  main (void)
 {
     OS_ERR  err;
 	
-		SystemInit();	 					/*NEEDED - initialize the clock - choosing clk src setting prescaler etc*/
+		SystemInit();	 					/* Initialize the clock - choosing clk source, setting prescaler etc */
 		init_timer1(0xFFFFFFFF);
 		enable_timer1();
 	
-		BSP_IntInit();					/*NEEDED - initialize interrupt - copies vector table from Flash to RAM*/
-		BSP_Start(); 						/*NEEDED - initialize kernel system tick timer - this is what we need, it initializes the systick timer */
+		BSP_IntInit();					/* Initialize interrupts - copies vector table from Flash to RAM */
+		BSP_Start(); 						/* Initialize kernel system tick timer - also used for the secure_boot */
 		
 		/************************ ADDED *****************************/
 		CPU_REG32 initial_time = CPU_REG_NVIC_ST_CURRENT; //read current value of the systick counter
-		//Potential updates for better precision: increase reload value and decrease prescaler
 
 		CPU_REG32 timer_initial_time = read_timer1();
 		/************************************************************/
@@ -71,6 +70,7 @@ int  main (void)
 		CPU_IntDis(); 					/*disable interrupt*/
 	
     CPU_Init();   					/*init cpu - name and timestamp init*/
+	
     Mem_Init();							/*Memory initialization*/
     OSInit(&err);						/* Initialize "uC/OS-III, The Real-Time Kernel"         */
 		
@@ -93,18 +93,22 @@ int  main (void)
 		/************************************************************/
 	
 			
-    /* Create the start task                                */
+    /* Create the start task */
     
 			
-		/************************ MODIFIED *****************************/			
+		/************************ MODIFIED *****************************/		
+		/* checking if the source code is the original and starting the OS if it is, 
+		   otherwise it stays in an infinite loop */
+			 
 		if(startup_time != correct_startup_time_w_loop || systick_overflows != correct_overflows 
 			 || timer_startup_time != correct_timer_startup_time_w_loop){
 			while(DEF_ON){};
 		}
 		else {
 			OSStart(&err);      /* Start multitasking (i.e. give control to uC/OS-III). */
-			//while(DEF_ON){			/* Should Never Get Here	*/
-			//};
+			
+			while(DEF_ON){		/* Should Never Get Here	*/
+			};
 		}
 }
 
