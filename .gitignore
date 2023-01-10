@@ -2,6 +2,10 @@
 ###################################################
 Objects/
 
+# Ignore the landtiger related files #
+#######################################
+os_micrium_landtiger.uvguix.*
+os_micrium_landtiger.uvoptx
 
 # Compiled source #
 ###################
