@@ -10,7 +10,7 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCLAN5</pCCUsed>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::.\ARMCLANG5</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -838,6 +838,26 @@
               <FileName>timer.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Board\timer\timer.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>bare_metal_timer</GroupName>
+          <Files>
+            <File>
+              <FileName>IRQ_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\bare_metal_timer\IRQ_timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>lib_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\bare_metal_timer\lib_timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\bare_metal_timer\timer.h</FilePath>
             </File>
           </Files>
         </Group>

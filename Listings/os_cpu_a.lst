@@ -330,13 +330,13 @@ ARM Macro Assembler    Page 6
 
 
 nterwork --depend=.\objects\os_cpu_a.d -o.\objects\os_cpu_a.o -I.\RTE\Device\LP
-C1768 -I.\RTE\_Target_1 -IC:\Users\stefano\AppData\Local\Arm\Packs\ARM\CMSIS\5.
-9.0\CMSIS\Core\Include -IC:\Users\stefano\AppData\Local\Arm\Packs\Keil\LPC1700_
-DFP\2.7.1\Device\Include -IC:\Users\stefano\AppData\Local\Arm\Packs\Keil\LPC170
-0_DFP\2.7.1\RTE_Driver --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSI
-ON SETA 537" --predefine="_RTE_ SETA 1" --predefine="LPC175x_6x SETA 1" --prede
-fine="_RTE_ SETA 1" --list=.\listings\os_cpu_a.lst Software\uCOS-III\Ports\ARM-
-Cortex-M3\Generic\os_cpu_a.s
+C1768 -I.\RTE\_Target_1 -IC:\Users\Balint\AppData\Local\Arm\Packs\ARM\CMSIS\5.9
+.0\CMSIS\Core\Include -IC:\Users\Balint\AppData\Local\Arm\Packs\Keil\LPC1700_DF
+P\2.7.1\Device\Include -IC:\Users\Balint\AppData\Local\Arm\Packs\Keil\LPC1700_D
+FP\2.7.1\RTE_Driver --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION 
+SETA 537" --predefine="_RTE_ SETA 1" --predefine="LPC175x_6x SETA 1" --predefin
+e="_RTE_ SETA 1" --list=.\listings\os_cpu_a.lst Software\uCOS-III\Ports\ARM-Cor
+tex-M3\Generic\os_cpu_a.s
 
 
 

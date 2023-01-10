@@ -119,35 +119,35 @@ void TIMER0_IRQHandler (void)
 ******************************************************************************/
 int song=0;
 int note=0;
-void TIMER1_IRQHandler (void)
-{  	
-/*	if(note==N){ 
-		note=0;
-		song++;
-		if(song!=3){
-			disable_timer(1);
-			disable_timer(0);
-		}
-		else{
-			song--;
-		}
-	}
-	else
-		play=seq4beats[song][note++];
-	
-	if(play!=8){
-		disable_timer(0);
-		reset_timer(0);
-		init_timer(0,freqs[play]);
-		enable_timer(0);
-	}
-	else{
-		disable_timer(0);
-	}*/
-	
-	LPC_TIM1->IR = 1;			/* clear interrupt flag */
-  return;
-}
+//void TIMER1_IRQHandler (void)
+//{  	
+///*	if(note==N){ 
+//		note=0;
+//		song++;
+//		if(song!=3){
+//			disable_timer(1);
+//			disable_timer(0);
+//		}
+//		else{
+//			song--;
+//		}
+//	}
+//	else
+//		play=seq4beats[song][note++];
+//	
+//	if(play!=8){
+//		disable_timer(0);
+//		reset_timer(0);
+//		init_timer(0,freqs[play]);
+//		enable_timer(0);
+//	}
+//	else{
+//		disable_timer(0);
+//	}*/
+//	
+//	LPC_TIM1->IR = 1;			/* clear interrupt flag */
+//  return;
+//}
 
 void TIMER2_IRQHandler (void)
 {
