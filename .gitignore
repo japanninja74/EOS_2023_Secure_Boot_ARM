@@ -1,11 +1,11 @@
-# Ignore everything that is in the Objects folder #
-###################################################
+# Ignore everything that is in these folders #
+##############################################
 Objects/
+Listings/
 
 # Ignore the landtiger related files #
 #######################################
-os_micrium_landtiger.uvguix.*
-os_micrium_landtiger.uvoptx
+os_micrium_landtiger.**
 
 # Compiled source #
 ###################
