@@ -31,3 +31,10 @@ void Reset_Count_cycles_DWT(void);
 void Enable_Count_cycles_DWT(void);
 void Disable_Count_cycles_DWT(void);
 uint32_t Get_Count_cycles_DWT(void);
+
+/* generic reader function to read timer and register values*/
+void read_current_values(void);
+
+/* functions to check whether the currenct startup matches 
+	 with the predetermined, correct startup time */
+int check_if_startup_was_correct(void);

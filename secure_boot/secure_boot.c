@@ -12,6 +12,10 @@
 
 extern unsigned timer_overflows;
 
+extern CPU_REG32 systick_times[6];
+extern CPU_REG32 timer1_times[6];
+extern CPU_REG32 DWT_times[6];
+
 /* FUNCTIONS TO WORK WITH TIMER 1 */
 
 /* Enable timer 1 */
@@ -96,9 +100,43 @@ uint32_t Get_Count_cycles_DWT (void){
 	uint32_t cycles = BSP_REG_DWT_CYCCNT;
 	
 	return cycles;
+	
+	//this only works if the CPU_CFG_TS_TMR_EN is enabled
+	//CPU_TS32         timestamp;
+	//CPU_INT64U       usecs;
+	//timestamp = CPU_TS_Get32();           /* Read current timestamp counter value.      */
+	//usecs = CPU_TS32_to_uSec(timestamp);  /* Convert timestamp counter to microseconds. */	
 }
 
+void read_current_values(void)
+{
+	//static variable to index current value arrays
+	static int array_index = 0;
+	
+	CPU_SR_ALLOC(); 																	//needed for critical section
+	CPU_CRITICAL_ENTER(); 														//disabling interrupts for critical section process
+	
+	systick_times[array_index] = CPU_REG_NVIC_ST_CURRENT;
+	timer1_times[array_index] = read_timer1();
+	DWT_times[array_index] = Get_Count_cycles_DWT();
+	
+	CPU_CRITICAL_EXIT(); 															//exiting critical section	
+	
+	array_index++;																		//before exiting incremnt index
+	
+	return;
+}
 
+int check_if_startup_was_correct(void)
+{
+	if(0){
+		//TODO: fill out condition correctly
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
 /******************************************************************************
 **                            End Of File
 ******************************************************************************/

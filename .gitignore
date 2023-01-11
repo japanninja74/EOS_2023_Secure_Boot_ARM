@@ -5,7 +5,7 @@ Listings/
 
 # Ignore the landtiger related files #
 #######################################
-os_micrium_landtiger.**
+os_micrium_landtiger.uv*
 
 # Compiled source #
 ###################

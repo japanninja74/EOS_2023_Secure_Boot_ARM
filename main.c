@@ -18,14 +18,23 @@
 
 #include "secure_boot/secure_boot.h"
 
-     /* ----------------- APPLICATION GLOBALS ------------------ */
+/* ----------------- APPLICATION GLOBALS ------------------ */
 
-/************************ ADDED *****************************/
-const unsigned correct_overflows = 0;
-unsigned systick_overflows = 0;
+CPU_REG32 systick_times[6];
+CPU_REG32 timer1_times[6];
+CPU_REG32 DWT_times[6];
+
+//TODO: add register value arrays (sp, pc)
+
 unsigned timer_overflows = 0;
-const CPU_REG32 correct_startup_time_w_loop = 0x0000B1DD;
-const CPU_REG32 correct_timer_startup_time_w_loop = 0x00000AB4;
+unsigned systick_overflows = 0;
+//TODO: add overflow arrays?
+
+const CPU_REG32 correct_systick_times[6] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+const CPU_REG32 correct_timer1_times[6] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+const CPU_REG32 correct_DWT_times[6] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+
+//TODO: add and fill out correct time arrays
 
 /*
 *********************************************************************************************************
@@ -55,53 +64,37 @@ int  main (void)
     OS_ERR  err;
 	
 		SystemInit();	 					/* Initialize the clock - choosing clk source, setting prescaler etc */
+		BSP_IntInit();					/* Initialize interrupts - copies vector table from Flash to RAM */
+		BSP_Start(); 						/* Initialize kernel system tick timer - also used for the secure_boot */
 		init_timer1(0xFFFFFFFF);
 		enable_timer1();
 	
-		BSP_IntInit();					/* Initialize interrupts - copies vector table from Flash to RAM */
-		BSP_Start(); 						/* Initialize kernel system tick timer - also used for the secure_boot */
-		
-		/************************ ADDED *****************************/
-		CPU_REG32 initial_time = CPU_REG_NVIC_ST_CURRENT; //read current value of the systick counter
-
-		CPU_REG32 timer_initial_time = read_timer1();
-		/************************************************************/
+		read_current_values();	//read 1
 	
 		CPU_IntDis(); 					/*disable interrupt*/
-	
+
+		read_current_values();	//read 2
+
     CPU_Init();   					/*init cpu - name and timestamp init*/
-	
+		
+		read_current_values();	// read 3
+
     Mem_Init();							/*Memory initialization*/
+		
+		read_current_values();	// read 4
+
     OSInit(&err);						/* Initialize "uC/OS-III, The Real-Time Kernel"         */
 		
-	
-		/************************ ADDED *****************************/
-		//for(int i = 0; i < 10; i++){}; 										//loop to see if startup time changes with this	
-			
-		CPU_SR_ALLOC(); 																	//needed for critical section
-		CPU_CRITICAL_ENTER(); 														//disabling interrupts for critical section process
-		CPU_REG32 startup_time = CPU_REG_NVIC_ST_CURRENT;
-		CPU_REG32 timer_startup_time = read_timer1();	
-		CPU_CRITICAL_EXIT(); 															//exiting critical section
-			
-		//this only works if the CPU_CFG_TS_TMR_EN is enabled
-	  //CPU_TS32         timestamp;
-    //CPU_INT64U       usecs;
-    //timestamp = CPU_TS_Get32();           /* Read current timestamp counter value.      */
-    //usecs = CPU_TS32_to_uSec(timestamp);  /* Convert timestamp counter to microseconds. */		
-
-		/************************************************************/
-	
-			
+		read_current_values();	// read 5
     /* Create the start task */
     
+		//TODO: create start task
+		
+		read_current_values(); // read 6
 			
-		/************************ MODIFIED *****************************/		
 		/* checking if the source code is the original and starting the OS if it is, 
 		   otherwise it stays in an infinite loop */
-			 
-		if(startup_time != correct_startup_time_w_loop || systick_overflows != correct_overflows 
-			 || timer_startup_time != correct_timer_startup_time_w_loop){
+		if(0 == check_if_startup_was_correct()){
 			while(DEF_ON){};
 		}
 		else {
