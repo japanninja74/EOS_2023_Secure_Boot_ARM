@@ -24,17 +24,20 @@ CPU_REG32 systick_times[6];
 CPU_REG32 timer1_times[6];
 CPU_REG32 DWT_times[6];
 
-//TODO: add register value arrays (sp, pc)
+volatile uint32_t SP_values[6];
+volatile uint32_t PC_values[6];
+
 
 unsigned timer_overflows = 0;
 unsigned systick_overflows = 0;
 //TODO: add overflow arrays?
 
-const CPU_REG32 correct_systick_times[6] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
-const CPU_REG32 correct_timer1_times[6] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+const CPU_REG32 correct_systick_times[6] = {0x00010413, 0x0001038F, 0x000101B9, 0x00010109, 0x0000B00B, 0x0000AF8F};
+const CPU_REG32 correct_timer1_times[6] = {0x00000005, 0x00000016, 0x00000050, 0x00000066, 0x00000A86, 0x00000A96};
 const CPU_REG32 correct_DWT_times[6] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
-//TODO: add and fill out correct time arrays
+volatile const uint32_t correct_SP_values[6] = {0x2007F040, 0x2007F040, 0x2007F040, 0x2007F040, 0x2007F040, 0x2007F040};
+volatile const uint32_t correct_PC_values[6] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
 /*
 *********************************************************************************************************
