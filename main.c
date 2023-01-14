@@ -32,9 +32,9 @@ unsigned timer_overflows = 0;
 unsigned systick_overflows = 0;
 //TODO: add overflow arrays?
 
-const CPU_REG32 correct_systick_times[6] = {0x00010413, 0x0001038F, 0x000101B9, 0x00010109, 0x0000B00B, 0x0000AF8F};
-const CPU_REG32 correct_timer1_times[6] = {0x00000005, 0x00000016, 0x00000050, 0x00000066, 0x00000A86, 0x00000A96};
-const CPU_REG32 correct_DWT_times[6] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+const CPU_REG32 correct_systick_times[6] = {0x000103AA, 0x000102F9, 0x0001003D, 0x0000FF69, 0x0000BCF3, 0x0000BC4F};
+const CPU_REG32 correct_timer1_times[6] = {0x00000008, 0x0000001D, 0x00000076, 0x0000008F, 0x000008DF, 0x000008F3};
+const CPU_REG32 correct_DWT_times[6] = {0x00000088, 0x00000134, 0x000003F4, 0x000004C4, 0x00004740, 0x000047E0};
 
 volatile const uint32_t correct_SP_values[6] = {0x2007F040, 0x2007F040, 0x2007F040, 0x2007F040, 0x2007F040, 0x2007F040};
 volatile const uint32_t correct_PC_values[6] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
@@ -70,6 +70,7 @@ int  main (void)
 		BSP_IntInit();					/* Initialize interrupts - copies vector table from Flash to RAM */
 		BSP_Start(); 						/* Initialize kernel system tick timer - also used for the secure_boot */
 		init_timer1(0xFFFFFFFF);
+		Reset_Count_cycles_DWT();
 		enable_timer1();
 	
 		read_current_values();	//read 1
