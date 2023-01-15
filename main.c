@@ -20,6 +20,21 @@
 
 /* ----------------- APPLICATION GLOBALS ------------------ */
 
+
+
+//Defition of the Task Control Blocks for the tasks
+static OS_TCB				START_TSK_TCB;
+static OS_TCB				LED_TASK_TCB;
+
+
+// Definition of the Stacks for the START TASK
+static  CPU_STK_SIZE  START_TSK_STACK[START_CFG_TASK_STK_SIZE];
+
+// Definition of the Stacks for the LED TASK
+static  CPU_STK_SIZE  LED_TASK_STACK[LED_CFG_TASK_STK_SIZE];
+
+
+
 CPU_REG32 systick_times[6];
 CPU_REG32 timer1_times[6];
 CPU_REG32 DWT_times[6];
@@ -44,7 +59,8 @@ volatile const uint32_t correct_PC_values[6] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 *                                      LOCAL FUNCTION PROTOTYPES
 *********************************************************************************************************
 */
-
+static void START_TSK(void *p_arg);
+static void LED_TASK(void * p_arg);
 
 /**********************************************************************************************************
 *                                                main()
@@ -91,6 +107,22 @@ int  main (void)
 		
 		read_current_values();	// read 5
     /* Create the start task */
+		
+    OSTaskCreate((OS_TCB     *)&START_TSK_TCB,               /* Create the start task                                */
+                 (CPU_CHAR   *)"START_TASK",
+                 (OS_TASK_PTR ) START_TSK,
+                 (void       *) 0,
+                 (OS_PRIO     ) START_CFG_TASK_PRIO,
+                 (CPU_STK    *)&START_TSK_STACK[0],
+                 (CPU_STK     )(START_CFG_TASK_STK_SIZE / 10u),
+                 (CPU_STK_SIZE) START_CFG_TASK_STK_SIZE,
+                 (OS_MSG_QTY  ) 0,
+                 (OS_TICK     ) 0,
+                 (void       *) 0,
+                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+                 (OS_ERR     *)&err);		
+		
+		
     
 		//TODO: create start task
 		
@@ -109,6 +141,35 @@ int  main (void)
 		}
 }
 
+
+//Tasks
+
+static void START_TSK (void *p_arg) {
+		
+	OS_ERR	err;
+	LED_init(); 
+	
+	//Creation of the LED task
+  OSTaskCreate((OS_TCB     *)&LED_TASK_TCB,               /* Create the start task                                */
+               (CPU_CHAR   *)"LED_TASK",
+               (OS_TASK_PTR ) LED_TASK,
+               (void       *) 0,
+               (OS_PRIO     ) LED_CFG_TASK_PRIO,
+               (CPU_STK    *)&LED_TASK_STACK[0],
+               (CPU_STK     )(LED_CFG_TASK_STK_SIZE / 10u),
+               (CPU_STK_SIZE) LED_CFG_TASK_STK_SIZE,
+               (OS_MSG_QTY  ) 0,
+							 (OS_TICK     ) 0,
+               (void       *) 0,
+               (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+               (OS_ERR     *)&err);			
+
+}
+
+static void LED_TASK(void * p_args){
+	LED_Out(0xA);
+
+}
 
 
 

@@ -54,6 +54,8 @@
 *                                            TASK PRIORITIES
 *********************************************************************************************************
 */
+#define  LED_CFG_TASK_PRIO                       	  8u
+#define  START_CFG_TASK_PRIO                  			7u
 
 
 
@@ -62,6 +64,8 @@
 *                                            TASK STACK SIZES
 *********************************************************************************************************
 */
+#define  START_CFG_TASK_STK_SIZE                     128u
+#define  LED_CFG_TASK_STK_SIZE                       128u
 
 
 
