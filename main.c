@@ -47,11 +47,11 @@ unsigned timer_overflows = 0;
 unsigned systick_overflows = 0;
 //TODO: add overflow arrays?
 
-const CPU_REG32 correct_systick_times[6] = {0x000103AA, 0x000102F9, 0x0001003D, 0x0000FF69, 0x0000BCF3, 0x0000BC4F};
-const CPU_REG32 correct_timer1_times[6] = {0x00000008, 0x0000001D, 0x00000076, 0x0000008F, 0x000008DF, 0x000008F3};
-const CPU_REG32 correct_DWT_times[6] = {0x00000088, 0x00000134, 0x000003F4, 0x000004C4, 0x00004740, 0x000047E0};
+const CPU_REG32 correct_systick_times[6] = {0x000103A8, 0x000102F5, 0x00010048, 0x0000FF6E, 0x0000BD20, 0x0000B2E1};
+const CPU_REG32 correct_timer1_times[6] = {0x00000008, 0x0000001E, 0x00000074, 0x0000008F, 0x000008D9, 0x00000A21};
+const CPU_REG32 correct_DWT_times[6] = {0x00000087, 0x00000133, 0x000003E7, 0x000004BF, 0x0000470F, 0x0000514F};
 
-volatile const uint32_t correct_SP_values[6] = {0x2007F040, 0x2007F040, 0x2007F040, 0x2007F040, 0x2007F040, 0x2007F040};
+volatile const uint32_t correct_SP_values[6] = {0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420};
 volatile const uint32_t correct_PC_values[6] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
 
 /*
@@ -168,7 +168,6 @@ static void START_TSK (void *p_arg) {
 
 static void LED_TASK(void * p_args){
 	LED_Out(0xA);
-
 }
 
 
