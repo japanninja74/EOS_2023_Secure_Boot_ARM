@@ -52,7 +52,7 @@ const CPU_REG32 correct_timer1_times[6] = {0x00000008, 0x0000001E, 0x00000074, 0
 const CPU_REG32 correct_DWT_times[6] = {0x00000087, 0x00000133, 0x000003E7, 0x000004BF, 0x0000470F, 0x0000514F};
 
 volatile const uint32_t correct_SP_values[6] = {0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420};
-volatile const uint32_t correct_PC_values[6] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+volatile const uint32_t correct_PC_values[6] = {0x0, 0x0, 0x0, 0x0,0x0, 0x0};
 
 /*
 *********************************************************************************************************
