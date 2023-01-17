@@ -37,6 +37,10 @@
 const  CPU_CHAR  *os_task__c = "$Id: $";
 #endif
 
+
+/******************* ADDED AS PART OF THE SECURE BOOT FEATURE ************************/
+#include "../../secure_boot/secure_boot.h"
+
 /*
 ************************************************************************************************************************
 *                                                CHANGE PRIORITY OF A TASK
@@ -401,7 +405,23 @@ void  OSTaskCreate (OS_TCB        *p_tcb,
 #else
     (void)&q_size;
 #endif
-
+		
+		
+		
+		
+		
+		
+		/**************** ADDED AS PART OF THE SECURE BOOT FEATURE ********************/
+		
+		read_current_values();	//read 5
+		
+		/************************************************************************************/
+		
+		
+		
+		
+		
+		
     OSTaskCreateHook(p_tcb);                                /* Call user defined hook                                 */
 
 #if defined(OS_CFG_TLS_TBL_SIZE) && (OS_CFG_TLS_TBL_SIZE > 0u)

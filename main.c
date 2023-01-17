@@ -100,23 +100,19 @@ int  main (void)
 		read_current_values();	//read 1
 	
 		CPU_IntDis(); 					/*disable interrupt*/
-
-		read_current_values();	//read 2
-
     CPU_Init();   					/*init cpu - name and timestamp init*/
 		
-		read_current_values();	// read 3
+		read_current_values();	// read 2
 
     Mem_Init();							/*Memory initialization*/
 		
-		read_current_values();	// read 4
+		read_current_values();	// read 3
 
     OSInit(&err);						/* Initialize "uC/OS-III, The Real-Time Kernel"         */
 		
-		read_current_values();	// read 5
-    /* Create the start task */
+		read_current_values();	// read 4
 		
-    OSTaskCreate((OS_TCB     *)&START_TSK_TCB,               /* Create the start task                                */
+    OSTaskCreate((OS_TCB     *)&START_TSK_TCB,
                  (CPU_CHAR   *)"START_TASK",
                  (OS_TASK_PTR ) START_TSK,
                  (void       *) 0,
@@ -144,9 +140,6 @@ int  main (void)
 			};
 		}
 }
-
-
-//Tasks
 
 static void START_TSK (void *p_arg) {
 		
