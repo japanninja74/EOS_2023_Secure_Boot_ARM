@@ -18,12 +18,21 @@ extern CPU_REG32 DWT_times[6];
 extern uint32_t SP_values[6];
 extern uint32_t PC_values[6];
 
-extern const CPU_REG32 correct_systick_times[6];
-extern const CPU_REG32 correct_timer1_times[6];
-extern const CPU_REG32 correct_DWT_times[6];
+extern const CPU_REG32 max_correct_systick_times[6];
+extern const CPU_REG32 min_correct_systick_times[6];
 
-extern const uint32_t correct_SP_values[6];
-extern const uint32_t correct_PC_values[6];
+extern const CPU_REG32 max_correct_timer1_times[6];
+extern const CPU_REG32 min_correct_timer1_times[6];
+
+extern const CPU_REG32 max_correct_DWT_times[6];
+extern const CPU_REG32 min_correct_DWT_times[6];
+
+extern const uint32_t max_correct_SP_values[6];
+extern const uint32_t min_correct_SP_values[6];
+
+extern const uint32_t max_correct_PC_values[6];
+extern const uint32_t min_correct_PC_values[6];
+
 
 /* FUNCTIONS TO WORK WITH TIMER 1 */
 
@@ -158,10 +167,10 @@ int check_if_startup_was_correct(void)
 	int correct = 0;
 	for(int i = 0; i < 6; i++)
 	{
-		if(systick_times[i] == correct_systick_times[i] &&
-			 timer1_times[i] == correct_timer1_times[i] &&
-			 DWT_times[i] == correct_DWT_times[i] &&
-			 SP_values[i] == correct_SP_values[i] //&&
+		if(min_correct_systick_times[i] <= systick_times[i] && systick_times[i] <= max_correct_systick_times[i] &&
+			 min_correct_timer1_times[i] <= timer1_times[i]  && timer1_times[i] <= max_correct_timer1_times[i] &&
+			 min_correct_DWT_times[i] <= DWT_times[i] && DWT_times[i] <= max_correct_DWT_times[i] &&
+			 min_correct_SP_values[i] <= SP_values[i] && SP_values[i] <= max_correct_SP_values[i] //&&
 			 //PC_values[i] == correct_PC_values[i]
 		)
 		{

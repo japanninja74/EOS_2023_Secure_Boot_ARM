@@ -47,13 +47,21 @@ unsigned timer_overflows = 0;
 unsigned systick_overflows = 0;
 //TODO: add overflow arrays?
 
-const CPU_REG32 correct_systick_times[6] = {0x000103A8, 0x000102F5, 0x00010048, 0x0000FF6E, 0x0000BD20, 0x0000B2E1};
-const CPU_REG32 correct_timer1_times[6] = {0x00000008, 0x0000001E, 0x00000074, 0x0000008F, 0x000008D9, 0x00000A21};
-const CPU_REG32 correct_DWT_times[6] = {0x00000087, 0x00000133, 0x000003E7, 0x000004BF, 0x0000470F, 0x0000514F};
+//TODO: TEST AGAINST THESE VALUES AND MODIFY THEM ACCORDING TO REAL TIMINGS
+const CPU_REG32 max_correct_systick_times[6] = {0x000103AA, 0x000102F7, 0x0001004A, 0x0000FF70, 0x0000BD22, 0x0000B2E3};
+const CPU_REG32 min_correct_systick_times[6] = {0x000103A6, 0x000102F3, 0x00010046, 0x0000FF6C, 0x0000BD1E, 0x0000B2DF};
 
-volatile const uint32_t correct_SP_values[6] = {0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420};
-volatile const uint32_t correct_PC_values[6] = {0x0, 0x0, 0x0, 0x0,0x0, 0x0};
+const CPU_REG32 max_correct_timer1_times[6] = {0x0000000A, 0x00000021, 0x00000076, 0x00000092, 0x000008DB, 0x00000A23};
+const CPU_REG32 min_correct_timer1_times[6] = {0x00000006, 0x0000001C, 0x00000072, 0x0000008D, 0x000008D7, 0x00000A1E};
 
+const CPU_REG32 max_correct_DWT_times[6] = {0x00000089, 0x00000135, 0x000003E9, 0x000004C2, 0x00004712, 0x00005152};
+const CPU_REG32 min_correct_DWT_times[6] = {0x00000085, 0x00000131, 0x000003E5, 0x000004BD, 0x0000470D, 0x0000514D};
+
+volatile const uint32_t max_correct_SP_values[6] = {0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420};
+volatile const uint32_t min_correct_SP_values[6] = {0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420};
+
+volatile const uint32_t max_correct_PC_values[6] = {0x0, 0x0, 0x0, 0x0,0x0, 0x0};
+volatile const uint32_t min_correct_PC_values[6] = {0x0, 0x0, 0x0, 0x0,0x0, 0x0};
 /*
 *********************************************************************************************************
 *                                      LOCAL FUNCTION PROTOTYPES
@@ -121,10 +129,6 @@ int  main (void)
                  (void       *) 0,
                  (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR     *)&err);		
-		
-		
-    
-		//TODO: create start task
 		
 		read_current_values(); // read 6
 			
