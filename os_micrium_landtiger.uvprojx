@@ -854,6 +854,11 @@
               <FileType>5</FileType>
               <FilePath>.\secure_boot\secure_boot.h</FilePath>
             </File>
+            <File>
+              <FileName>assembly_functions.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\assembly_functions.s</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

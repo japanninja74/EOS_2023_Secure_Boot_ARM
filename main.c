@@ -35,25 +35,27 @@ static  CPU_STK_SIZE  LED_TASK_STACK[LED_CFG_TASK_STK_SIZE];
 
 
 
-CPU_REG32 systick_times[6];
-CPU_REG32 timer1_times[6];
-CPU_REG32 DWT_times[6];
+CPU_REG32 systick_times[10];
+CPU_REG32 timer1_times[10];
+CPU_REG32 DWT_times[10];
 
-volatile uint32_t SP_values[6];
-volatile uint32_t PC_values[6];
+volatile uint32_t SP_values[10];
 
 
 unsigned timer_overflows = 0;
 unsigned systick_overflows = 0;
-//TODO: add overflow arrays?
 
-const CPU_REG32 correct_systick_times[6] = {0x000103A8, 0x000102F5, 0x00010048, 0x0000FF6E, 0x0000BD20, 0x0000B2E1};
-const CPU_REG32 correct_timer1_times[6] = {0x00000008, 0x0000001E, 0x00000074, 0x0000008F, 0x000008D9, 0x00000A21};
-const CPU_REG32 correct_DWT_times[6] = {0x00000087, 0x00000133, 0x000003E7, 0x000004BF, 0x0000470F, 0x0000514F};
+const CPU_REG32 average_systick_times[10] = {0x000103A1, 0x000100C1,	0x0000FFE6,	0x0000CA54,	0x0000BE99,	0x0000BC1A,	0x0000B2B5,	0x0000B12B};
+const int max_deviation_systick_times[10] = {1, 1, 1, 1, 1, 1, 1, 1};
 
-volatile const uint32_t correct_SP_values[6] = {0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420};
-volatile const uint32_t correct_PC_values[6] = {0x0, 0x0, 0x0, 0x0,0x0, 0x0};
+const CPU_REG32 average_timer1_times[10] = {0x00000008,	0x00000064,	0x0000007F,	0x00000732,	0x000008A9,	0x000008F9,	0x00000A26,	0x00000A57};
+const int max_deviation_timer1_times[10] = {1, 1, 1, 1, 1, 1, 1, 1};
 
+const CPU_REG32 average_DWT_times[10] = {0x0000008F,	0x0000036F,	0x00000447,	0x000039DB,	0x00004597,	0x00004817,	0x0000517B,	0x00005307};
+const int max_deviation_DWT_times[10] = {1, 1, 1, 1, 1, 1, 1, 1};
+
+const uint32_t average_SP_values[10] = {0x2007F41C,	0x2007F41C,	0x2007F41C,	0x2007F394,	0x2007F394,	0x2007F41C,	0x2007F3D4,	0x2007F41C};
+const int max_deviation_SP_values[10] = {1, 1, 1, 1, 1, 1, 1, 1};
 /*
 *********************************************************************************************************
 *                                      LOCAL FUNCTION PROTOTYPES
@@ -80,6 +82,8 @@ static void LED_TASK(void * p_arg);
 
 int  main (void)
 {
+
+	
     OS_ERR  err;
 	
 		SystemInit();	 					/* Initialize the clock - choosing clk source, setting prescaler etc */
@@ -92,23 +96,19 @@ int  main (void)
 		read_current_values();	//read 1
 	
 		CPU_IntDis(); 					/*disable interrupt*/
-
-		read_current_values();	//read 2
-
     CPU_Init();   					/*init cpu - name and timestamp init*/
 		
-		read_current_values();	// read 3
+		read_current_values();	// read 2
 
     Mem_Init();							/*Memory initialization*/
 		
-		read_current_values();	// read 4
+		read_current_values();	// read 3
 
     OSInit(&err);						/* Initialize "uC/OS-III, The Real-Time Kernel"         */
 		
-		read_current_values();	// read 5
-    /* Create the start task */
+		read_current_values();	// read 4
 		
-    OSTaskCreate((OS_TCB     *)&START_TSK_TCB,               /* Create the start task                                */
+    OSTaskCreate((OS_TCB     *)&START_TSK_TCB,
                  (CPU_CHAR   *)"START_TASK",
                  (OS_TASK_PTR ) START_TSK,
                  (void       *) 0,
@@ -121,10 +121,6 @@ int  main (void)
                  (void       *) 0,
                  (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR     *)&err);		
-		
-		
-    
-		//TODO: create start task
 		
 		read_current_values(); // read 6
 			
@@ -140,9 +136,6 @@ int  main (void)
 			};
 		}
 }
-
-
-//Tasks
 
 static void START_TSK (void *p_arg) {
 		

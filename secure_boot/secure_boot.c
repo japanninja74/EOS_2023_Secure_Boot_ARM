@@ -12,18 +12,23 @@
 
 extern unsigned timer_overflows;
 
-extern CPU_REG32 systick_times[6];
-extern CPU_REG32 timer1_times[6];
-extern CPU_REG32 DWT_times[6];
-extern uint32_t SP_values[6];
-extern uint32_t PC_values[6];
+extern CPU_REG32 systick_times[10];
+extern CPU_REG32 timer1_times[10];
+extern CPU_REG32 DWT_times[10];
+extern uint32_t SP_values[10];
 
-extern const CPU_REG32 correct_systick_times[6];
-extern const CPU_REG32 correct_timer1_times[6];
-extern const CPU_REG32 correct_DWT_times[6];
+extern const CPU_REG32 average_systick_times[10];
+extern const int max_deviation_systick_times[10];
 
-extern const uint32_t correct_SP_values[6];
-extern const uint32_t correct_PC_values[6];
+extern const CPU_REG32 average_timer1_times[10];
+extern const int max_deviation_timer1_times[10];
+
+extern const CPU_REG32 average_DWT_times[10];
+extern const int max_deviation_DWT_times[10];
+
+extern const uint32_t average_SP_values[10];
+extern const int max_deviation_SP_values[10];
+
 
 /* FUNCTIONS TO WORK WITH TIMER 1 */
 
@@ -109,29 +114,8 @@ uint32_t Get_Count_cycles_DWT (void){
 	uint32_t cycles = BSP_REG_DWT_CYCCNT;
 	
 	return cycles;
-	
-	//this only works if the CPU_CFG_TS_TMR_EN is enabled
-	//CPU_TS32         timestamp;
-	//CPU_INT64U       usecs;
-	//timestamp = CPU_TS_Get32();           /* Read current timestamp counter value.      */
-	//usecs = CPU_TS32_to_uSec(timestamp);  /* Convert timestamp counter to microseconds. */	
 }
 
-/**
-  \brief   Get Main Stack Pointer
-  \details Returns the current value of the Main Stack Pointer (MSP).
-  \return               MSP Register value
- */
-/* static uint32_t __get_PC(void)
-{
-  register uint32_t regProgramCounter;
-  __asm__ volatile (
-			"mov %[var1], pc \n\t"
-	: [var1] "=r" (regProgramCounter)
-	);
-  return regProgramCounter;
-
-} */
 
 void read_current_values(void)
 {
@@ -144,8 +128,8 @@ void read_current_values(void)
 	systick_times[array_index] = CPU_REG_NVIC_ST_CURRENT;
 	timer1_times[array_index] = read_timer1();
 	DWT_times[array_index] = Get_Count_cycles_DWT();
-	SP_values[array_index] = __get_MSP();
-	//PC_values[array_index] = __get_PC();
+	SP_values[array_index] = read_sp();
+
 	CPU_CRITICAL_EXIT(); 															//exiting critical section	
 	
 	array_index++;																		//before exiting incremnt index
@@ -156,13 +140,19 @@ void read_current_values(void)
 int check_if_startup_was_correct(void)
 {
 	int correct = 0;
-	for(int i = 0; i < 6; i++)
+	for(int i = 0; i < 8; i++)
 	{
-		if(systick_times[i] == correct_systick_times[i] &&
-			 timer1_times[i] == correct_timer1_times[i] &&
-			 DWT_times[i] == correct_DWT_times[i] &&
-			 SP_values[i] == correct_SP_values[i] //&&
-			 //PC_values[i] == correct_PC_values[i]
+		if((average_systick_times[i] - max_deviation_systick_times[i]) <= systick_times[i] && 
+			 systick_times[i] <= (average_systick_times[i] + max_deviation_systick_times[i]) &&
+		
+			 (average_timer1_times[i] - max_deviation_timer1_times[i]) <= timer1_times[i] &&
+			 timer1_times[i] <= (average_timer1_times[i] + max_deviation_timer1_times[i]) &&
+		
+			 (average_DWT_times[i] - max_deviation_DWT_times[i]) <= DWT_times[i] &&
+   		 DWT_times[i] <= (average_DWT_times[i]  + max_deviation_DWT_times[i]) &&
+		
+			 (average_SP_values[i] - max_deviation_SP_values[i]) <= SP_values[i] && 
+		   SP_values[i] <= (average_SP_values[i] + max_deviation_SP_values[i])
 		)
 		{
 			correct = 1;
