@@ -35,33 +35,27 @@ static  CPU_STK_SIZE  LED_TASK_STACK[LED_CFG_TASK_STK_SIZE];
 
 
 
-CPU_REG32 systick_times[6];
-CPU_REG32 timer1_times[6];
-CPU_REG32 DWT_times[6];
+CPU_REG32 systick_times[10];
+CPU_REG32 timer1_times[10];
+CPU_REG32 DWT_times[10];
 
-volatile uint32_t SP_values[6];
-volatile uint32_t PC_values[6];
+volatile uint32_t SP_values[10];
 
 
 unsigned timer_overflows = 0;
 unsigned systick_overflows = 0;
-//TODO: add overflow arrays?
 
-//TODO: TEST AGAINST THESE VALUES AND MODIFY THEM ACCORDING TO REAL TIMINGS
-const CPU_REG32 max_correct_systick_times[6] = {0x000103AA, 0x000102F7, 0x0001004A, 0x0000FF70, 0x0000BD22, 0x0000B2E3};
-const CPU_REG32 min_correct_systick_times[6] = {0x000103A6, 0x000102F3, 0x00010046, 0x0000FF6C, 0x0000BD1E, 0x0000B2DF};
+const CPU_REG32 average_systick_times[10] = {0x000103A1, 0x000100C1,	0x0000FFE6,	0x0000CA54,	0x0000BE99,	0x0000BC1A,	0x0000B2B5,	0x0000B12B};
+const int max_deviation_systick_times[10] = {1, 1, 1, 1, 1, 1, 1, 1};
 
-const CPU_REG32 max_correct_timer1_times[6] = {0x0000000A, 0x00000021, 0x00000076, 0x00000092, 0x000008DB, 0x00000A23};
-const CPU_REG32 min_correct_timer1_times[6] = {0x00000006, 0x0000001C, 0x00000072, 0x0000008D, 0x000008D7, 0x00000A1E};
+const CPU_REG32 average_timer1_times[10] = {0x00000008,	0x00000064,	0x0000007F,	0x00000732,	0x000008A9,	0x000008F9,	0x00000A26,	0x00000A57};
+const int max_deviation_timer1_times[10] = {1, 1, 1, 1, 1, 1, 1, 1};
 
-const CPU_REG32 max_correct_DWT_times[6] = {0x00000089, 0x00000135, 0x000003E9, 0x000004C2, 0x00004712, 0x00005152};
-const CPU_REG32 min_correct_DWT_times[6] = {0x00000085, 0x00000131, 0x000003E5, 0x000004BD, 0x0000470D, 0x0000514D};
+const CPU_REG32 average_DWT_times[10] = {0x0000008F,	0x0000036F,	0x00000447,	0x000039DB,	0x00004597,	0x00004817,	0x0000517B,	0x00005307};
+const int max_deviation_DWT_times[10] = {1, 1, 1, 1, 1, 1, 1, 1};
 
-volatile const uint32_t max_correct_SP_values[6] = {0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420};
-volatile const uint32_t min_correct_SP_values[6] = {0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420, 0x2007F420};
-
-volatile const uint32_t max_correct_PC_values[6] = {0x0, 0x0, 0x0, 0x0,0x0, 0x0};
-volatile const uint32_t min_correct_PC_values[6] = {0x0, 0x0, 0x0, 0x0,0x0, 0x0};
+const uint32_t average_SP_values[10] = {0x2007F41C,	0x2007F41C,	0x2007F41C,	0x2007F394,	0x2007F394,	0x2007F41C,	0x2007F3D4,	0x2007F41C};
+const int max_deviation_SP_values[10] = {1, 1, 1, 1, 1, 1, 1, 1};
 /*
 *********************************************************************************************************
 *                                      LOCAL FUNCTION PROTOTYPES
@@ -88,6 +82,8 @@ static void LED_TASK(void * p_arg);
 
 int  main (void)
 {
+
+	
     OS_ERR  err;
 	
 		SystemInit();	 					/* Initialize the clock - choosing clk source, setting prescaler etc */

@@ -41,3 +41,5 @@ void read_current_values(void);
 /* functions to check whether the currenct startup matches 
 	 with the predetermined, correct startup time */
 int check_if_startup_was_correct(void);
+
+extern int read_sp(void);
