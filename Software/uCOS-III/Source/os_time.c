@@ -524,7 +524,6 @@ void  OSTimeSet (OS_TICK   ticks,
 * Returns    : none
 ************************************************************************************************************************
 */
-extern unsigned systick_overflows;
 
 void  OSTimeTick (void)
 {
@@ -532,8 +531,6 @@ void  OSTimeTick (void)
 #if OS_CFG_ISR_POST_DEFERRED_EN > 0u
     CPU_TS  ts;
 #endif
-
-		systick_overflows++; //incrementing counter if systick counter overflows during startup
 	
     OSTimeTickHook();                                       /* Call user definable hook                               */
 

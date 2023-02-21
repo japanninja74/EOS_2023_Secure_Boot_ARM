@@ -32,9 +32,6 @@ void Enable_Count_cycles_DWT(void);
 void Disable_Count_cycles_DWT(void);
 uint32_t Get_Count_cycles_DWT(void);
 
-/* function to get current program counter */
-static uint32_t __get_PC(void);
-
 /* generic reader function to read timer and register values*/
 void read_current_values(void);
 

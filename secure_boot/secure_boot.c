@@ -8,22 +8,7 @@
 #include "lpc17xx.h"
 #include "secure_boot.h"
 #include "cpu.h"
-#include "bsp.h" //not sure if it is needed
-
-extern unsigned timer_overflows;
-
-extern CPU_REG32 systick_times[6];
-extern CPU_REG32 timer1_times[6];
-extern CPU_REG32 DWT_times[6];
-extern uint32_t SP_values[6];
-extern uint32_t PC_values[6];
-
-extern const CPU_REG32 correct_systick_times[6];
-extern const CPU_REG32 correct_timer1_times[6];
-extern const CPU_REG32 correct_DWT_times[6];
-
-extern const uint32_t correct_SP_values[6];
-extern const uint32_t correct_PC_values[6];
+#include "bsp.h"
 
 /* FUNCTIONS TO WORK WITH TIMER 1 */
 
@@ -55,126 +40,52 @@ void reset_timer1(void)
 /* initialize timer 1 */
 void init_timer1 (uint32_t TimerInterval)
 {
-	TIMER1_PRESCALER = 0x00000001; //setting the prescaler to the smallest possible value
-	LPC_TIM1->MR0 = TimerInterval;
-	LPC_TIM1->MCR = 3; //TC reset and interrupt generated
-	NVIC_EnableIRQ(TIMER1_IRQn);
 	
-	return;
 }
 
 /* Read timer 1's value */
 CPU_REG32 read_timer1(void) {
-	CPU_REG32 ret_val = TIMER1_CURRENT_VALUE;
 	
-	return ret_val;
+	return 0;
 }
 
 
 /* Interrupt handler for Timer 1 */
 void TIMER1_IRQHandler (void)
 {
-	timer_overflows++; 		/* increment timer overflows */
-  LPC_TIM1->IR = 1;			/* clear interrupt flag */
-  return;
+
 }
 
 /* FUNCTIONS TO WORK WITH THE DWT */
 
 /* Reset the DWT Cycle Counter's value to zero */
 void Reset_Count_cycles_DWT (void){
-	
-	BSP_REG_DWT_CYCCNT  = 0; //Reset this values for counting
 		
 }
 
 /* Enable the Cycle counter */
 void Enable_Count_cycles_DWT (void){
-	
-	BSP_REG_DEMCR  |= DEF_BIT_24; //Activate debug exception and monitor control --set the bit 24 to 1
-  BSP_REG_DWT_CR |= DEF_BIT_00; //Enable the CYYCCNT counter by setting bit 1 to 1
-	
-	return;
+
 }
 
 /* disable the Cycle counter */
 void Disable_Count_cycles_DWT (void){
-	BSP_REG_DWT_CR &= ~DEF_BIT_00; //Disable the CYYCCNT counter by setting bit 1 to 0
-	
-	return;
+
 }
 
 /* retrieve the Cycle counter's current value */
 uint32_t Get_Count_cycles_DWT (void){
-	uint32_t cycles = BSP_REG_DWT_CYCCNT;
-	
-	return cycles;
-	
-	//this only works if the CPU_CFG_TS_TMR_EN is enabled
-	//CPU_TS32         timestamp;
-	//CPU_INT64U       usecs;
-	//timestamp = CPU_TS_Get32();           /* Read current timestamp counter value.      */
-	//usecs = CPU_TS32_to_uSec(timestamp);  /* Convert timestamp counter to microseconds. */	
+	return 0;
 }
-
-/**
-  \brief   Get Main Stack Pointer
-  \details Returns the current value of the Main Stack Pointer (MSP).
-  \return               MSP Register value
- */
-/* static uint32_t __get_PC(void)
-{
-  register uint32_t regProgramCounter;
-  __asm__ volatile (
-			"mov %[var1], pc \n\t"
-	: [var1] "=r" (regProgramCounter)
-	);
-  return regProgramCounter;
-
-} */
 
 void read_current_values(void)
 {
-	//static variable to index current value arrays
-	static int array_index = 0;
-	
-	CPU_SR_ALLOC(); 																	//needed for critical section
-	CPU_CRITICAL_ENTER(); 														//disabling interrupts for critical section process
-	
-	systick_times[array_index] = CPU_REG_NVIC_ST_CURRENT;
-	timer1_times[array_index] = read_timer1();
-	DWT_times[array_index] = Get_Count_cycles_DWT();
-	SP_values[array_index] = __get_MSP();
-	//PC_values[array_index] = __get_PC();
-	CPU_CRITICAL_EXIT(); 															//exiting critical section	
-	
-	array_index++;																		//before exiting incremnt index
-	
-	return;
+
 }
 
 int check_if_startup_was_correct(void)
 {
-	int correct = 0;
-	for(int i = 0; i < 6; i++)
-	{
-		if(systick_times[i] == correct_systick_times[i] &&
-			 timer1_times[i] == correct_timer1_times[i] &&
-			 DWT_times[i] == correct_DWT_times[i] &&
-			 SP_values[i] == correct_SP_values[i] //&&
-			 //PC_values[i] == correct_PC_values[i]
-		)
-		{
-			correct = 1;
-		}
-		else{
-			correct = 0;
-			break;
-		}
-			
-	}
-	
-	return correct;
+	return 0;
 }
 /******************************************************************************
 **                            End Of File
