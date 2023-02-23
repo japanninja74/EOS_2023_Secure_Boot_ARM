@@ -1,5 +1,5 @@
 # OSES_project
-This material was originally developed as part of an assignment of the _Operating Systems for Embedded Systems_ course delivered at _Politecnico di Torino_ by Prof. Stefano Di Carlo”.
+This material was originally developed as part of an assignment of the _Operating Systems for Embedded Systems_ course delivered at _Politecnico di Torino_ by Prof. Stefano Di Carlo.
 
 We implemented a lightweight secure boot process which is based on performance counters.
 
