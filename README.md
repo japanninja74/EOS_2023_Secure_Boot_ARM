@@ -1,16 +1,26 @@
-# OSES_project
-This is the project for the Operating Systems for Embedded Systems course at Politecnico di Torino in the academic year 2022/2023.
+# Lightweight Secure Boot on ARM
+
+We implemented a lightweight secure boot process which is based on performance counters.
+
+On the 'empty_project' branch you can find a startup project for the lab experience, while the 'development' branch includes a proposed solution by us.
+
+Developed by:
+
+* Bálint Bujtor (Politecnico di Torino)
+* Juan José Restrepo (Politecnico di Torino)
+* Jovan Žunić (Politecnico di Torino)
+
+Revised bya:
+
+* Stefano Di Carlo (Politecnico di Torino)
+* Alessandro Savino (Politecnico di Torino)
+* Alessio Carpegna (Politecnico di Torino)
+* Cristiano Chenet (Politecnico di Torino)
 
 
-TODOs:
+<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>
 
-1) Find a way and test how to count time with a timer, DWT or SYSTICK. We should do this bare-metal before the OS starts up, with some bare-metal.
-    Have access to the DWT register without the OS part
-2) Measure the startup time and average with some kind of error margin that we consider correct boot time
-3) Save this startup time on the board and at the next startup check if it is the same (within the margin)
+This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. This means that you are free to use, share, and modify the code as long as you give appropriate credit, do not use the code for commercial purposes, and follow the other terms of the license.
 
-4) Model the attack: change something in source (startup routine) and see if it can notice it or not.
+For more information, please see the [full text of the license](https://creativecommons.org/licenses/by-nc/4.0/legalcode).
 
-DONE:
-
-Nothing is done at the moment
